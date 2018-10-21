@@ -105,6 +105,7 @@ namespace thunder.auth
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
+
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
 
                     foreach (var client in Config.GetClients())

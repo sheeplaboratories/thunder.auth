@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <Target Name="PrePublishTarget" AfterTargets="Publish">
-    <Exec Command="dotnet ef database update" />
+    <Exec Command="dotnet ef database update -c UserDbContext" />
+    <Exec Command="dotnet ef database update -c PersistedGrantDbContext " />
+    <Exec Command="dotnet ef database update -c ConfigurationDbContext" />
   </Target>
 
 </Project>
