@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using thunder.auth.Services;
+using IdentityServer4.Services;
 
 namespace thunder.auth
 {
@@ -70,7 +72,7 @@ namespace thunder.auth
                     options.TokenCleanupInterval = 30;
                 });
 
-
+            services.AddTransient<IProfileService, ProfileService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
