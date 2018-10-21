@@ -17,14 +17,17 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using thunder.auth.Services;
 using IdentityServer4.Services;
+using Microsoft.Extensions.Logging;
 
 namespace thunder.auth
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILoggerFactory _loggerFactory;
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
+            _loggerFactory = loggerFactory;
         }
 
         public IConfiguration Configuration { get; }
@@ -71,6 +74,12 @@ namespace thunder.auth
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;
                 });
+
+            var cors = new DefaultCorsPolicyService(_loggerFactory.CreateLogger<DefaultCorsPolicyService>())
+            {
+                AllowAll = true
+            };
+            services.AddSingleton<ICorsPolicyService>(cors);
 
             services.AddTransient<IProfileService, ProfileService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

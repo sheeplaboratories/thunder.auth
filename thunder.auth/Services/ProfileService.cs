@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using thunder.auth.Data;
 
@@ -22,8 +23,11 @@ namespace thunder.auth.Services
             var user = _store.FindByIdAsync(userId).Result;
             if(user != null)
             {
-               var claims = _store.GetClaimsAsync(user).Result;
-                context.AddRequestedClaims(claims.AsEnumerable());
+                List<Claim> claims = new List<Claim>
+                {
+                    new Claim("email", user.Email)
+                };
+                context.IssuedClaims.AddRange(claims.AsEnumerable());
             }
             return Task.CompletedTask;
         }
